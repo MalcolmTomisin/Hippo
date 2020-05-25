@@ -10,4 +10,8 @@ public class Script extends ViewModel {
     public LiveData<String> getReport(){
         return Report;
     }
+
+    public void setReport (String speech){
+        Report.setValue(speech);
+    }
 }
