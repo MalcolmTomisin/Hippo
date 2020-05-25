@@ -66,6 +66,7 @@ public class FirebaseActivity extends AppCompatActivity {
                 editor.putString(firebaseUser,json);
                 editor.apply();
                 Toast.makeText(this,"Welcome",Toast.LENGTH_SHORT).show();
+                startActivity( new Intent(this,MainActivity.class));
                 // ...
             } else {
                 // Sign in failed. If response is null the user canceled the
