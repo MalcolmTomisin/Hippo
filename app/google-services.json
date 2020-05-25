@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "205906949144",
+    "firebase_url": "https://hippo-2b672.firebaseio.com",
+    "project_id": "hippo-2b672",
+    "storage_bucket": "hippo-2b672.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:205906949144:android:65df05df4479e52707ff6d",
+        "android_client_info": {
+          "package_name": "com.pausemedia.hippo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "205906949144-tht0n7krqtgdam537u241jbitavou7i0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKms4rgYaUvwswMztgbEgehdGLGbAnCKo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "205906949144-tht0n7krqtgdam537u241jbitavou7i0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,2 @@
+rootProject.name='Hippo'
+include ':app'
