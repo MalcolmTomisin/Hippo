@@ -4,7 +4,6 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
-import android.view.View;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -33,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (countToExit > 0){
             countToExit--;
+            String retry = "Alright, Let's try that again " + myUser.getDisplayName();
+            binding.textView.setText(retry);
             binding.imageView.setImageDrawable(getDrawable(R.drawable.ic_microphone));
             return;
         }
@@ -82,18 +83,10 @@ public class MainActivity extends AppCompatActivity {
                     String finalReport = report.concat(". \n" + myUser.getDisplayName());
                     scriptModel.postReport(finalReport);
                     binding.imageView.setImageDrawable(getDrawable(R.drawable.ic_icons_checkmark));
-                    binding.imageView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-//                            FragmentManager manager = getSupportFragmentManager();
-//                            FragmentTransaction transaction = manager.beginTransaction();
-//                            ReportFragment blankFragment = new ReportFragment();
-//                            transaction.add(R.id.fragment_prompt, blankFragment);
-//                            transaction.commit();
-                            Intent scriptIntent = new Intent(MainActivity.this, PromptActivity.class);
-                            scriptIntent.putExtra(myScript,finalReport);
-                            startActivity(scriptIntent);
-                        }
+                    binding.imageView.setOnClickListener(view -> {
+                        Intent scriptIntent = new Intent(MainActivity.this, PromptActivity.class);
+                        scriptIntent.putExtra(myScript,finalReport);
+                        startActivity(scriptIntent);
                     });
                 }
                 break;
