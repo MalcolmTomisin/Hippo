@@ -1,17 +1,16 @@
 package com.pausemedia.hippo;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModel;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.view.View;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -43,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
         scriptModel.getReport().observe(this, script -> {
             binding.textView.setText(script);
         });
+        auth = FirebaseAuth.getInstance();
+        myUser = auth.getCurrentUser();
         binding.imageView.setOnClickListener(view -> {
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
@@ -67,7 +68,16 @@ public class MainActivity extends AppCompatActivity {
             case REQ_CODE:
                 if (resultCode== RESULT_OK && data != null){
                     ArrayList result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    scriptModel.postReport((String) result.get(0));
+                    String report = (String) result.get(0);
+                    String finalReport = report.concat(". \n" + myUser.getDisplayName());
+                    scriptModel.postReport(finalReport);
+                    binding.imageView.setImageDrawable(getDrawable(R.drawable.ic_icons_checkmark));
+                    binding.imageView.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+
+                        }
+                    });
                 }
                 break;
         }
