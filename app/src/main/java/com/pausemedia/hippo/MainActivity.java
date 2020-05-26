@@ -26,9 +26,16 @@ public class MainActivity extends AppCompatActivity {
     private final int REQ_CODE = 100;
     FirebaseAuth auth;
     FirebaseUser myUser;
+    public static final String myScript = "SCRIPT";
+    private static int countToExit = 0;
 
     @Override
     public void onBackPressed() {
+        if (countToExit > 0){
+            countToExit--;
+            binding.imageView.setImageDrawable(getDrawable(R.drawable.ic_microphone));
+            return;
+        }
         super.onBackPressed();
         finishAffinity();
         System.exit(0);
@@ -44,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
         });
         auth = FirebaseAuth.getInstance();
         myUser = auth.getCurrentUser();
+        assert myUser != null;
+        scriptModel.postReport("Hello " + myUser.getDisplayName());
         binding.imageView.setOnClickListener(view -> {
             Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
             intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
@@ -67,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
         switch(requestCode){
             case REQ_CODE:
                 if (resultCode== RESULT_OK && data != null){
+                    countToExit = 1;
                     ArrayList result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     String report = (String) result.get(0);
                     String finalReport = report.concat(". \n" + myUser.getDisplayName());
@@ -75,7 +85,14 @@ public class MainActivity extends AppCompatActivity {
                     binding.imageView.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-
+//                            FragmentManager manager = getSupportFragmentManager();
+//                            FragmentTransaction transaction = manager.beginTransaction();
+//                            ReportFragment blankFragment = new ReportFragment();
+//                            transaction.add(R.id.fragment_prompt, blankFragment);
+//                            transaction.commit();
+                            Intent scriptIntent = new Intent(MainActivity.this, PromptActivity.class);
+                            scriptIntent.putExtra(myScript,finalReport);
+                            startActivity(scriptIntent);
                         }
                     });
                 }
