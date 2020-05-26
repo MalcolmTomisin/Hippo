@@ -21,14 +21,25 @@ import java.util.List;
 
 public class FirebaseActivity extends AppCompatActivity {
     private SharedPreferences preferences;
-    private static final String user = "com.pausemedia.hippo.USER";
+    private static final String pUser = "com.pausemedia.hippo.USER";
     private static final String firebaseUser = "user";
     private static final int RC_SIGN_IN = 123;
+    private FirebaseAuth auth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_firebase);
-        preferences = this.getSharedPreferences(user, Context.MODE_PRIVATE);
+        auth = FirebaseAuth.getInstance();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        FirebaseUser currentUser = auth.getCurrentUser();
+        if (currentUser !=  null){
+            startActivity(new Intent(this, MainActivity.class));
+        }
+        createSignInIntent();
     }
 
     public void createSignInIntent() {
@@ -36,7 +47,6 @@ public class FirebaseActivity extends AppCompatActivity {
         // Choose authentication providers
         List<AuthUI.IdpConfig> providers = Arrays.asList(
                 new AuthUI.IdpConfig.GoogleBuilder().build(),
-                new AuthUI.IdpConfig.FacebookBuilder().build(),
                 new AuthUI.IdpConfig.TwitterBuilder().build());
 
         // Create and launch sign-in intent
@@ -62,6 +72,7 @@ public class FirebaseActivity extends AppCompatActivity {
                 Gson gson = new Gson();
                 Type type = new TypeToken<FirebaseUser>(){}.getType();
                 String json = gson.toJson(user, type);
+                preferences = this.getSharedPreferences(pUser, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = preferences.edit();
                 editor.putString(firebaseUser,json);
                 editor.apply();
