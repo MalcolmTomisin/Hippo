@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
             String retry = "Alright, Let's try that again " + myUser.getDisplayName();
             binding.textView.setText(retry);
             binding.imageView.setImageDrawable(getDrawable(R.drawable.ic_microphone));
+            binding.imageView.setOnClickListener(view -> startSpeechToText());
             return;
         }
         super.onBackPressed();
@@ -55,19 +56,7 @@ public class MainActivity extends AppCompatActivity {
         assert myUser != null;
         scriptModel.postReport("Hello " + myUser.getDisplayName());
         binding.imageView.setOnClickListener(view -> {
-            Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-                    RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-            intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-            intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Need to speak");
-
-            try{
-                startActivityForResult(intent, REQ_CODE);
-            } catch (ActivityNotFoundException e){
-                Toast.makeText(getApplicationContext(),
-                        "Sorry your device not supported",
-                        Toast.LENGTH_SHORT).show();
-            }
+            startSpeechToText();
         });
     }
 
@@ -90,6 +79,22 @@ public class MainActivity extends AppCompatActivity {
                     });
                 }
                 break;
+        }
+    }
+
+    private void startSpeechToText(){
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+                RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Need to speak");
+
+        try{
+            startActivityForResult(intent, REQ_CODE);
+        } catch (ActivityNotFoundException e){
+            Toast.makeText(getApplicationContext(),
+                    "Sorry your device not supported",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 }
