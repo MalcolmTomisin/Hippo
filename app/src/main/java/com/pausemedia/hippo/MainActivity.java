@@ -4,6 +4,8 @@ import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
+        //
         if (countToExit > 0){
             countToExit--;
             String retry = "Alright, Let's try that again " + myUser.getDisplayName();
@@ -41,6 +44,13 @@ public class MainActivity extends AppCompatActivity {
         super.onBackPressed();
         finishAffinity();
         System.exit(0);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.options_menu, menu);
+        return true;
     }
 
     @Override
