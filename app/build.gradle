@@ -52,6 +52,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
     // LiveData
     implementation "androidx.lifecycle:lifecycle-livedata:$lifecycle_version"
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     testImplementation 'androidx.test:core:1.0.0'
     implementation 'com.twitter.sdk.android:twitter-core:3.1.1'
     implementation 'androidx.appcompat:appcompat:1.0.2'
