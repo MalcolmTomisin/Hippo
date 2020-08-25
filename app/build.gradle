@@ -47,6 +47,11 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
     def lifecycle_version = "2.2.0"
+    def room_version = "2.2.5"
+
+    implementation "androidx.room:room-runtime:$room_version"
+    annotationProcessor "androidx.room:room-compiler:$room_version"
+    testImplementation "androidx.room:room-testing:$room_version"
 
     // ViewModel
     implementation "androidx.lifecycle:lifecycle-viewmodel:$lifecycle_version"
