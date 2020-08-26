@@ -1,17 +1,22 @@
 package com.pausemedia.hippo;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.firebase.ui.auth.AuthUI;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.pausemedia.hippo.databinding.ActivityMainBinding;
@@ -35,10 +40,26 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
         switch (item.getItemId()){
             case R.id.sign_out:
-                FirebaseAuth.getInstance().signOut();
-                finish();
+                builder.setMessage("Do you want to sign out?");
+                builder.setTitle("Sign out!");
+                builder.setIcon(R.drawable.ic_logo);
+                builder.setPositiveButton("Yes", (dialogInterface, i) -> {
+                    AuthUI.getInstance()
+                            .signOut(this)
+                            .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    startActivity(new Intent(MainActivity.this, FirebaseActivity.class));
+                                    finish();
+                                }
+                            });
+                });
+                builder.setNegativeButton("No", (dialogInterface, i) -> dialogInterface.cancel());
+                AlertDialog dialog = builder.create();
+                dialog.show();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
